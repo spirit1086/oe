@@ -1,0 +1,35 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Feedback service",
+        "description": "endpoints",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/feedback": {
+            "get": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "set user feedback",
+                "operationId": "set feedback",
+                "parameters": [
+                    {
+                        "name": "lastname",
+                        "in": "formData",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "Ivanov"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response users kpi"
+                    }
+                }
+            }
+        }
+    }
+}
