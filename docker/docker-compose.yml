@@ -1,0 +1,43 @@
+version: '3'
+services:
+    oe_web:
+        build: .
+        container_name: oe_web
+        working_dir: /var/www/html
+        volumes:
+            - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
+            - "./etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
+            - "./etc/ssl:/etc/nginx/ssl"
+            - "../:/var/www/html"
+        ports:
+            - 8200:80
+        restart: always
+        depends_on:
+            - oe_php
+    oe_php:
+        build:
+            context: .
+            dockerfile: DockerfilePhp
+        container_name: oe_php
+        restart: always
+        working_dir: "/var/www/html"
+        volumes:
+            - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+            - "../:/var/www/html"
+    oe_db:
+        build:
+            context: .
+            dockerfile: DockerPg
+        container_name: oe_db
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: root
+            PGDATA: "/var/lib/postgresql/data"
+        volumes:
+            - "./data/db/pg:/var/lib/postgresql/data"
+        ports:
+            - 5100:5432
+networks:
+    default:
+        external:
+            name: oe
